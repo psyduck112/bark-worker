@@ -19,6 +19,25 @@ async function handleRequest(request, env, ctx) {
     const realPathname = pathname.replace((new RegExp('^' + rootPath.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"))), '/')
 
     switch (realPathname) {
+    case "/": {
+        // 处理根路径
+        return new Response(JSON.stringify({
+            'code': 200,
+            'message': 'Bark Server is running',
+            'version': handler.version,
+            'timestamp': util.getTimestamp(),
+        }), {
+            status: 200,
+            headers: {
+                'content-type': 'application/json',
+            }
+        })
+    }
+    case "/register": {
+        return handler.register(searchParams)
+    }
+    // 其余路由保持不变...
+
         case "/register": {
             return handler.register(searchParams)
         }
